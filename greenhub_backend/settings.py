@@ -27,7 +27,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
-    'greenhub.slmaaa.work'
+    'greenhub.slmaaa.work',
+    'greenhub.restaurant.slmaaa.work'
 ]
 
 

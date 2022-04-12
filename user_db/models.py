@@ -18,20 +18,19 @@ class User (models.Model):
 
 class Record (models.Model):
     RECORD_TYPE_CHOICES = [('B','BORROW'),('R','RETURN'),('T','TOP UP')]
-    STATUS = [('P','Processing'),('C','Completed')]
 
     user = models.ForeignKey(User, on_delete =models.CASCADE, null = True)
     record_type = models.CharField(max_length=1, choices=RECORD_TYPE_CHOICES, null =True)
-    status = models.CharField(max_length=1, choices=STATUS,default='P')
 
     date_time = models.DateTimeField('Completed time')
-    location_id = models.ForeignKey(Restaurant,on_delete=models.CASCADE, null=True)
+    restaurant = models.ForeignKey(Restaurant,on_delete=models.CASCADE, null=True)
 
-    balance_value = models.IntegerField('value change on balance',default = 10)
-    g_cash_value = models.IntegerField('value change on g-cash',default = 0)
+    balance_delta = models.IntegerField('value change on balance',default = 10)
+    g_cash_delta = models.IntegerField('value change on g-cash',default = 0)
 
     def __str__(self):
-        return self.date_time.strftime("%m/%d/%Y, %H:%M:%S")+' '+self.user
+        return self.date_time.strftime("%m/%d/%Y, %H:%M:%S")+' '+self.user.name
+
 
     class Meta:
         ordering = ["date_time"]
