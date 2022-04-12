@@ -1,3 +1,6 @@
 [submodule "greenhub-mobile-client"]
 	path = greenhub-mobile-client
 	url = https://github.com/slmaaa/greenhub-mobile-client
+[submodule "greenhub-restaurant-client"]
+	path = greenhub-restaurant-client
+	url = git@github.com:slmaaa/greenhub-restaurant-client.git

@@ -4,5 +4,5 @@ from django.urls import path
 from . import consumers
 
 websocket_urlpatterns = [
-    path('ws/user_db/qr', consumers.BorrowRequestConsumer.as_asgi()),
+    path('ws/user_db/qr_request', consumers.QRRequestConsumer.as_asgi()),
 ]       
