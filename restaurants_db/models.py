@@ -1,8 +1,10 @@
-from django.db import models
+from django.contrib.gis.db import models
+from django.contrib.gis.geos import Point
 import datetime
 import uuid
 
-# Create your models here.
+# Create your models here.   
+
 class Restaurant(models.Model):
     REGION_CHOICES = [("NT","New Territories"),
     ("KLN","Kowloon"),
@@ -44,9 +46,14 @@ class Restaurant(models.Model):
 
     lat = models.FloatField('latitude')
     lng = models.FloatField('longitude')
+    point =models.PointField(srid = 4326, null=True)
 
     business_hours_from = models.TimeField(default=datetime.time(10,0))
     business_hours_to = models.TimeField(default=datetime.time(21,0))
+
+    def save(self,*args,**kwargs):
+        self.point = Point(lng,lat)
+        super(Restaurant,self).save(*args,**kwargs)
 
     def __str__(self):
         return self.name

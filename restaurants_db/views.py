@@ -3,29 +3,36 @@ from django.shortcuts import render
 # Create your views here.
 
 from django.http import HttpResponse
+from rest_framework import viewsets
+from django.contrib.gis.measure import D
+from django.contrib.gis.geos import Point
 
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from rest_framework import status
 from .serializers import RestaurantSerializer
 from .models import Restaurant
 
+class RestaurantViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    serializer_class = RestaurantSerializer
+    http_method_names = ['get']
 
-def index(request):
-    return HttpResponse("Hello, world. You're at the restaurant DB index.")
+    def get_queryset(self):
+        query_set = Restaurant.objects.all()
+        lat = self.request.query_params.get('lat')
+        lng = self.request.query_params.get('lng')
+        search = self.request.query_params.get('search')
+        dst = self.request.query_params.get('dst')
 
-@api_view(['GET', 'POST'])
+        if (lat is not None) and (lng is not None) and (dst is not None):
+            pnt = Point(lng,lat,srid =4326)
+            query_set = query_set.filter(point__distance_lte=(pnt,float(dst)))
+        
+        if search is not None:
+            query_set = query_set.filter(name__icontains=search)
 
-def get_all(request):
-    if request.method == 'GET':
-        restaurant = Restaurant.objects.all()
-        serializer = RestaurantSerializer(restaurant, many=True)
-        return Response(serializer.data)
+        return query_set
 
-    elif request.method == 'POST':
-        serializer = NoteSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+
 

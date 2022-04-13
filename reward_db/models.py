@@ -12,9 +12,13 @@ class Reward(models.Model):
     illustration = models.ImageField(upload_to='rewards')
     cost = models.IntegerField('G-cashed needed to redeem',default = 1000)
 
+class Gift(Reward):
+    pass
+
 class Coupon(Reward):
     discount = models.IntegerField(default = 3)
     min_consume = models.IntegerField(default = 20)
+    restaurant = models.ForeignKey(Restaurant,on_delete=models.CASCADE,null=True)
 
 class Reward_Record (models.Model):
     user = models.ForeignKey(User, on_delete = models.CASCADE)

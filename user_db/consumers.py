@@ -53,7 +53,7 @@ class QRVerificationConsumer(WebsocketConsumer):
         self.accept()
 
     def disconnect(self, close_code):
-        pss
+        pass
 
     def receive(self, text_data):
         data_json = json.loads(text_data)

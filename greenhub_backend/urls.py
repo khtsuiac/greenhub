@@ -14,8 +14,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include,path
+from rest_framework import routers
+from user_db import views as user_views
+from restaurants_db import views as restaurant_views
+
+router = routers.DefaultRouter()
+router.register(r'users', user_views.UserViewSet)
+router.register(r'groups', user_views.GroupViewSet)
+router.register(r'restaurant', restaurant_views.RestaurantViewSet,basename="restaurant")
 
 urlpatterns = [
-    path('backend/r_db/', include('restaurants_db.urls')),
     path('backend/admin/', admin.site.urls),
+    path('backend/',include(router.urls)),
+    path('backend/api-auth/',include('rest_framework.urls', namespace='rest_framework'))
 ]
