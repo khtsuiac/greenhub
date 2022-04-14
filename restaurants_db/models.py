@@ -36,6 +36,9 @@ class Restaurant(models.Model):
 
     region = models.CharField(max_length=3,choices=REGION_CHOICES,default="NT")
     district = models.CharField(max_length=2,choices=DISTRICT_CHOICES,default="SK")
+    address = models.CharField(max_length =100,default="")
+
+    picture = models.ImageField(upload_to='restaurants',null=True)
 
     cuisine = models.CharField('cuisine type',max_length=100)
 
@@ -46,13 +49,13 @@ class Restaurant(models.Model):
 
     lat = models.FloatField('latitude')
     lng = models.FloatField('longitude')
-    point =models.PointField(srid = 4326, null=True)
+    point =models.PointField(editable=False,null=True)
 
     business_hours_from = models.TimeField(default=datetime.time(10,0))
     business_hours_to = models.TimeField(default=datetime.time(21,0))
 
     def save(self,*args,**kwargs):
-        self.point = Point(lng,lat)
+        self.point = Point(self.lng,self.lat)
         super(Restaurant,self).save(*args,**kwargs)
 
     def __str__(self):

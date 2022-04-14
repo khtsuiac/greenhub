@@ -17,11 +17,13 @@ from django.urls import include,path
 from rest_framework import routers
 from user_db import views as user_views
 from restaurants_db import views as restaurant_views
+from reward_db import views as reward_views
 
 router = routers.DefaultRouter()
 router.register(r'users', user_views.UserViewSet)
 router.register(r'groups', user_views.GroupViewSet)
 router.register(r'restaurant', restaurant_views.RestaurantViewSet,basename="restaurant")
+router.register(r'reward',reward_views.RewardViewSet)
 
 urlpatterns = [
     path('backend/admin/', admin.site.urls),

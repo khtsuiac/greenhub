@@ -12,6 +12,9 @@ class Reward(models.Model):
     illustration = models.ImageField(upload_to='rewards')
     cost = models.IntegerField('G-cashed needed to redeem',default = 1000)
 
+    def __str__(self):
+        return self.name
+
 class Gift(Reward):
     pass
 

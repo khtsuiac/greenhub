@@ -70,6 +70,7 @@ class QRVerificationConsumer(WebsocketConsumer):
                 'result': "failed",
                 "reason": "Invalid restaurant account"
             }))
+            return
 
         try:
             client = Client.objects.get(pid=uuid.UUID(pid_str))
@@ -78,6 +79,7 @@ class QRVerificationConsumer(WebsocketConsumer):
                 'result': "failed",
                 "reason": "Invalid QR code "
             }))
+            return
 
         record = Record()
         if (mode=="TOP UP"):
@@ -111,6 +113,7 @@ class QRVerificationConsumer(WebsocketConsumer):
             "r_name":restaurant.name,
             "r_id": str(restaurant.id),
             "amount": amount,
+            "balance_delta" : record.balance_delta, 
             "g_cash": record.g_cash_delta,
 
         }
